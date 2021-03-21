@@ -1,0 +1,69 @@
+<div class="container mt-4">
+    <div class="row conten">
+        <div class="col-md-4">
+            <h4><i class="fas fa-file"></i> Cargar archivos</h4>
+            <form [formGroup]="formulario" (ngSubmit)="guardar()">
+                <div *ngIf="avisoGuardado" class="alert alert-success" role="alert">
+                  Archivos subidos correctamente!
+                </div>
+                <div class="mb-3">
+                  <label fclass="form-label">Descripción</label>
+                  <input [ngClass]="{'is-invalid':validarDescripion}"
+                         type="text" class="form-control" formControlName="descripcion">
+                    <div *ngIf="validarDescripion">
+                      <span class="error animate__animated animate__fadeIn">Completa el campo descripción</span>
+                    </div>
+                </div>
+                <div>
+                  <app-carga-archivos></app-carga-archivos>
+                </div>
+                <div class="mb-3 mt-2">
+                  <button type="submit" 
+                          [disabled]="fireService.cargando"
+                          class="btn btn-primary btn-sm">
+                           <span *ngIf="!cargandoGuardado; else other"><i class="fas fa-save"></i> Guardar</span>
+                           <ng-template #other><i class="fas fa-spinner fa-spin"></i> Subiendo</ng-template>
+                  </button>
+                  <button type="reset" 
+                          [disabled]="fireService.cargando"
+                          class="btn btn-danger btn-sm m-1" (click)="cancelar()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <div *ngIf="cargandoLista" class="text-center"><i class="fas fa-spinner fa-spin"></i> Cargando</div>
+            <div *ngIf="(listaArchivosPrint.length==0 && !cargandoLista); else mostrar" class="alert alert-warning" role="alert">
+              <h5><i class="fas fa-folder"></i> No hay archivos para imprimir</h5>
+            </div>
+            <ng-template #mostrar>
+              <table class="table mt-4" *ngIf="!cargandoLista">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Descripción</th>
+                      <th scope="col">Archivos</th>
+                      <th scope="col">Eliminar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let data of listaArchivosPrint; let i=index">
+                      <th scope="row">{{i+1}}</th>
+                      <td>{{data.descripcion}}</td>
+                      <td>
+                        <ul *ngFor="let item of data.listaArchivo; let ind=index">
+                          <li><a href="{{item.url}}" target="_blank"><i class="fas fa-link"></i> Archivo {{ind+1}}</a></li>
+                        </ul>
+                      </td>
+                      <td>
+                        <button (click)="eliminarPrint(data.id,i)"
+                                class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                      </td>
+                    </tr>
+    
+                  </tbody>
+              </table>
+            </ng-template>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+
+<div class="container-fluit mt-2 p-4">
+    <div class="conten-title">
+      <div>
+        <h4><i class="fas fa-tasks"></i> Tareas</h4>
+      </div>
+      <div>
+        <i class="fas fa-search"></i>
+        <input class="input-search" type="text" placeholder="Buscar tarea" [(ngModel)]="textoBuscar">
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div *ngIf="fireService.listaTareas.length==0 && fireService.cargandoPagina" 
+             class="alert alert-info animate__animated animate__fadeIn" role="alert">
+          <i class="fas fa-folder"></i> Lista de tareas vacía
+        </div>
+        <div *ngIf="!fireService.cargandoPagina" class="text-center"><i class="fas fa-spinner fa-spin"></i> Cargando</div>
+        <div class="col-sm-6" *ngFor="let data of fireService.listaTareas | buscarTarea:textoBuscar; let i=index">
+          <div class="card mt-2" 
+               [ngClass]="{'vencio':funService.tiempoRestante(data.fechaInicio,data.tiempoTarea)===0,'termine':data.estadoTarea}">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4">
+                    <span>
+                      <b class="nota-time">
+                        <i class="far fa-clock fa-spin"></i> {{funService.tiempoRestante(data.fechaInicio,data.tiempoTarea)}} días para entregar
+                      </b>
+                    </span>
+                    <div class="text-center"><img class="img-card" [src]="data.imagen" alt=""></div>
+                    <div 
+                          class="finish-buttons text-center">
+                          <h4 *ngIf="data.estadoTarea"><b>Tarea terminada</b></h4>
+                          <span *ngIf="!data.estadoTarea"
+                                (click)="terminarTarea(true,data)"
+                                class="badge rounded-pill bg-dark cursor">
+                            <i class="fas fa-smile-beam"></i> Terminé
+                          </span>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h5 class="card-title titulo-tarea">
+                      <b>{{data.titulo}}</b> 
+                      <span class="date-start"><b>Fecha de incio: {{data.fechaInicio|date}}</b></span>
+                    </h5>
+                    <p class="card-text">{{data.descripcion | slice:0:150}}...
+                      <span (click)="verMore(data.descripcion,data.titulo)"
+                            data-bs-toggle="modal" data-bs-target="#mas"
+                            class="badge rounded-pill bg-dark cursor m-1">
+                            ver mas
+                      </span>
+                    </p>
+                    <p><b>Recursos</b></p>
+                    <span *ngIf="data.listaFiles==null" class="badge bg-danger">No hay archivos</span>
+                    <ul>
+                        <span *ngFor="let archivo of data.listaFiles; let i=index"
+                              class="badge bg-success m-1 cursor">
+                              <a class="link-archivo" target="_blank" href="{{archivo.url}}"><i class="fas fa-link"></i> Enlace {{i+1}}</a>
+                        </span>
+                    </ul>
+                    <div *ngIf="authService.activo" class="conten-edit">
+        
+                      <span 
+                            [routerLink]="['/editar',data.id]"
+                            class="badge rounded-pill bg-success m-1 cursor">
+                          <i class="fas fa-edit"></i> Editar
+                      </span>
+                      <span (click)="fireService.deleteTarea(data.id,i)"
+                            class="badge rounded-pill bg-danger m-1 cursor">
+                         <i class="fas fa-trash"></i> Eliminar
+                      </span>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" 
+                               (click)="editarstado(data.estadoTarea,data)"
+                               type="checkbox" [checked]="data.estadoTarea">
+                        <label class="form-check-label">
+                          <span *ngIf="data.estadoTarea;else other">Terminado</span>
+                          <ng-template #other>Falta</ng-template>
+                        </label>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="mas" tabindex="-1"  data-bs-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{titulo}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        .{{mensajeCompleto}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>

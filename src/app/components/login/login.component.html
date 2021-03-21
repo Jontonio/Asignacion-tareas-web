@@ -1,0 +1,52 @@
+
+<div class="conten-general">
+    <div class="row login-conten animate__animated animate__fadeInLeft">
+        <div class="col-md-6 text-center conten-img-login">
+            <img class="img-login" [src]="funService.imgLogin" alt="">
+        </div>
+        <div class="col-md-6">
+            <form [formGroup]="formulario">
+                <h4 class="text-center mb-3">Login <i class="fas fa-user-shield"></i></h4>
+                <div class="mb-3">
+                  <input type="email" 
+                         [ngClass]="{'is-invalid':validarCorreo}"
+                         class="form-control" 
+                         placeholder="Usuario" 
+                         formControlName="email">
+                  <div *ngIf="validarCorreo">
+                    <div *ngIf="formulario.controls['email'].errors?.pattern">
+                      <small class="error">Correo inválido</small>
+                    </div>
+                    <div *ngIf="formulario.controls['email'].errors?.required">
+                      <small class="error">Complete el campo correo</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <input type="password"
+                         [ngClass]="{'is-invalid':validarEntradaPass}"
+                         class="form-control" 
+                         placeholder="Contraseña" 
+                         formControlName="pass">
+                  <div *ngIf="validarEntradaPass">
+                    <span class="error sm">Completa el campo</span>
+                  </div>
+                </div>
+                <div *ngIf="authService.vista" class="alert alert-danger" role="alert">
+                  {{authService.mensaje}}
+                </div>
+                <div class="d-grid gap-2">
+                  <button (click)="ingresar()"
+                          type="submit" class="btn btn-primary control-block">Ingresar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="fixed-bottom animate__animated animate__fadeIn decorator" style="height: 150px; overflow: hidden;" >
+      <svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;">
+        <path d="M0.00,49.98 C149.99,150.00 349.03,-19.23 500.00,49.98 L500.00,150.00 L0.00,150.00 Z" style="stroke: none; fill: rgba(187, 187, 187, 0.877);">
+        </path>
+      </svg>
+    </div>
+</div>
+

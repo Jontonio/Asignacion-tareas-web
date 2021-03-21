@@ -1,0 +1,8 @@
+.collapse{
+    display: flex;
+    justify-content: space-between;
+}
+.item{
+    padding-bottom: 12px;
+    border-bottom: 2px solid gray;
+}

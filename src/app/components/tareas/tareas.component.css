@@ -1,0 +1,51 @@
+.img-card{
+  background-size: cover;
+  width: 110%;
+}
+.conten-title{
+    display: flex;
+    justify-content: space-between;
+}
+.input-search{
+    border:none;
+    border-bottom: 1px solid gray;;
+    outline: 0px;
+    margin-left: 4px;
+}
+.nota-time{
+    font-size: 15px;
+    color: rgb(138, 1, 104);
+}
+.titulo-tarea{
+    display: flex;
+    justify-content: space-between;
+}
+.date-start{
+    font-size: 13px;
+}
+.finish-buttons{
+    margin-top: 15px;
+}
+.link-archivo{
+    color: #FFF;
+    font-size: 13px;
+    text-decoration: none;
+}
+.termine{
+    background: rgb(127, 211, 127);
+}
+.vencio{
+    background: rgb(236, 43, 59);
+}
+.conten-edit{
+    display: flex;
+}
+@media (max-width:760px){
+    .img-card{
+        width: 50%;
+        margin: 0 auto;
+    }
+    .finish-buttons{
+        margin: 20px;
+    }
+}

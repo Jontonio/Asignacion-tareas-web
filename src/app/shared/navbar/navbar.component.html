@@ -1,0 +1,27 @@
+<nav class="navbar navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+      <div>
+        <a class="navbar-brand" routerLink="home">OurTask</a>
+      </div>
+      <div class="animate__animated animate__fadeInRight">
+        <span routerLink="imprimir"
+              routerLinkActive="item"
+              class="cursor m-2">Imprimir</span>
+        <span routerLink="tareas"
+              routerLinkActive="item"
+              class="cursor m-2">Tareas</span>
+        <span *ngIf="authService.activo"
+              routerLinkActive="item"
+              routerLink="add-tarea"
+              class="cursor m-1"><i class="fas fa-plus-circle"></i> Tarea</span>
+        <span *ngIf="!authService.activo"
+              routerLink="login"
+              routerLinkActive="item"
+              class="cursor m-2">Login</span>
+        <span *ngIf="authService.activo"
+              class="m-3 cursor"
+              (click)="salir()"><i class="fas fa-sign-out-alt"></i> Salir</span>
+      </div> 
+    </div>
+</nav>
+<br><br>

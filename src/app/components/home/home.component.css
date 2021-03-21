@@ -1,0 +1,22 @@
+.conten-general{
+    height: 80vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.conten-login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+.title{
+    font-family: 'Chango', cursive;
+    font-size: 30px;
+}
+.conten-text{
+    background: red;
+    width: 100%;
+}

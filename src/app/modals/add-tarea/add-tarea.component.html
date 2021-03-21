@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="row animate__animated animate__fadeIn">
+        <div class="col-md-6">
+            <h3 class="mt-4">{{tituloFormulario}}</h3>
+            <form [formGroup]="formularioAdd" (ngSubmit)="guardar()">
+                <div *ngIf="vistaMensaje" class="alert alert-success animate__animated animate__fadeInUp" role="alert">
+                    <i class="fas fa-check-circle"></i> {{mensaje}}
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Titulo de tarea</label>
+                    <input type="email"
+                           [ngClass]="{'is-invalid': validarTitulo}"
+                           class="form-control" formControlName="titulo">
+                    <div *ngIf="validarTitulo">
+                        <span class="error animate__animated animate__fadeIn">Completa el campo título</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Descripción de la tarea</label>
+                    <textarea
+                          [ngClass]="{'is-invalid': validarDescripcion}"
+                          class="form-control" rows="3" formControlName="descripcion"></textarea>
+                    <div *ngIf="validarDescripcion">
+                        <span class="error animate__animated animate__fadeIn">Completa el campo descripción</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Fecha de entegra</label>
+                    <input [ngClass]="{'is-invalid': validarFecha}"
+                          [min]="funService.validarFecha()"
+                          type="date" class="form-control" formControlName="tiempoTarea">
+                    <div *ngIf="validarFecha">
+                        <span class="error animate__animated animate__fadeIn">El campo fecha es obligatorio</span>
+                    </div>
+                </div>
+                <div>
+                    <app-carga-archivos></app-carga-archivos>
+                </div>
+                <div class="mt-4 mb-4">
+                    <button [disabled]="fireservice.cargando || (cargandoGuardar==true)"
+                            class="btn btn-success btn-sm">
+                            <span *ngIf="cargandoGuardar; else other"><i class="fas fa-circle-notch fa-spin"></i> {{mensajeButton}}</span>
+                            <ng-template #other><i class="fas fa-save"></i> {{mensajeButton}}</ng-template>
+                    </button>
+                    <button [disabled]="fireservice.cargando"
+                            (click)="cancelar()"
+                            type="reset"
+                            class="btn btn-danger btn-sm m-1" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 conten-img-add">
+            <img class="mt-4 img-login" [src]="funService.imgHome" alt="">
+        </div>
+    </div>
+</div>

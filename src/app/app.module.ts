@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AngularFireStorageModule } from '@angular/fire/storage'
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 // spinner
 import { NgxSpinnerModule } from "ngx-spinner";
 
@@ -22,7 +23,6 @@ import { from } from 'rxjs';
 import { BuscarTareaPipe } from './pipes/buscar-tarea.pipe';
 import { ImprimirComponent } from './components/imprimir/imprimir.component';
 import { CargaArchivosComponent } from './components/carga-archivos/carga-archivos.component';
-
 
 @NgModule({
   declarations: [
@@ -45,7 +45,8 @@ import { CargaArchivosComponent } from './components/carga-archivos/carga-archiv
     NgxSpinnerModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    AngularFirestoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

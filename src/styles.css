@@ -44,6 +44,10 @@
     align-items: center;
     flex-direction: column;
 }
+.c-delete{
+  cursor: pointer;
+  /* font-size: 20px; */
+}
  @media (max-width:760px){
     .form-conten{
         width: 90%;

@@ -6,8 +6,12 @@
       <div class="animate__animated animate__fadeInRight">
         <span routerLink="imprimir"
               routerLinkActive="item"
-              class="cursor m-2">Imprimir</span>
+              class="cursor m-2">Archivos</span>
+        <span routerLink="home"
+              routerLinkActive="item"
+              class="cursor m-2">Acerca</span>
         <span routerLink="tareas"
+              *ngIf="false"
               routerLinkActive="item"
               class="cursor m-2">Tareas</span>
         <span *ngIf="authService.activo"
@@ -21,7 +25,7 @@
         <span *ngIf="authService.activo"
               class="m-3 cursor"
               (click)="salir()"><i class="fas fa-sign-out-alt"></i> Salir</span>
-      </div> 
+      </div>
     </div>
 </nav>
 <br><br>

@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators'
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { Archivo } from '../models/archivo.models';
-
+import { AngularFirestore } from '@angular/fire/firestore';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,21 +20,23 @@ export class FirebaseService {
   cargando      : boolean = false;
   cargandoPagina: boolean = false;
   porcentajeUp:number = 0;
-  
-  constructor( 
+
+  constructor(
     private storage: AngularFireStorage,
-    private auth:AuthService,
-    private http: HttpClient ) {}
-    
-    guardarData(data:Tarea){
-      return this.http.post(`${this.url}Tareas.json`,data);
+    private firestore: AngularFirestore,
+    private http: HttpClient ) {
+      this.existFileArray();
+    }
+
+  guardarData(data:Tarea){
+    return this.http.post(`${this.url}Tareas.json`,data);
   }
 
   obtenerTareas(){
     this.getData().subscribe(
-      (res)=>{ 
+      (res)=>{
         this.cargandoPagina = true;
-        this.listaTareas = res 
+        this.listaTareas = res
       },
       (err)=>{ console.log(err) })
   }
@@ -62,7 +64,7 @@ export class FirebaseService {
   }
 
   deleteFilesPrint(key:string){
-    return this.http.delete(`${this.url}imprimir/${key}.json`);
+    return this.firestore.doc(`imprimir/${key}`).delete();
   }
 
   convertirArreglo(objetoTarea:Object){
@@ -81,16 +83,21 @@ export class FirebaseService {
   }
 
   uploadFilesPrint(archivos:Archivo){
-    return this.http.post(`${this.url}imprimir.json`,archivos)
+
+    return  this.firestore.collection('imprimir').add( archivos.toObject() );
+
+  }
+
+  updateId( id:string ){
+
+    return this.firestore.doc(`imprimir/${id}`).update({ id });
+
   }
 
   getPrintArchivos(){
-    return this.http.get(`${this.url}imprimir.json`)
-               .pipe(
-                 map(resp=>{
-                   return this.convertirArregloArchivos(resp);
-                 })
-               )
+
+    return this.firestore.collection<Archivo>('imprimir').valueChanges();
+
   }
 
   convertirArregloArchivos(objetoArchivo:Object){
@@ -109,20 +116,23 @@ export class FirebaseService {
   }
 
   uploadFile(event:any) {
+
     const name = new Date().getTime();
     const file = event.target.files[0];
     const ruta = 'archivos/'+name;
     const ref = this.storage.ref(ruta);
     const task = ref.put(file);
-    //verificamos mientras se sube la foto
+
+    // verificamos mientras se sube la foto
     this.cargando = true;
     task.then((tarea)=>{
         ref.getDownloadURL().subscribe((imgUrl)=>{
           // obteniendo la url reseteamos el porcentaje
           this.porcentajeUp = 0;
           this.cargando = false;
-          const archivo = new File(imgUrl);
-          this.listaArchivos.push(archivo);
+          const archivo = new File(imgUrl, file.name, file.size);
+          this.listaArchivos.push({...archivo});
+          this.saveLocalstorage();
         })
     })
 
@@ -135,10 +145,25 @@ export class FirebaseService {
 
   eliminarItemFile(indice:number){
     this.listaArchivos.splice(indice,1);
+    this.saveLocalstorage();
   }
 
   conInt(value:any):number{
     return parseInt(value,10);
+  }
+
+  saveLocalstorage(){
+    localStorage.setItem('files_print', JSON.stringify(this.listaArchivos))
+  }
+
+  existFileArray(){
+
+    if(localStorage.getItem('files_print')){
+
+      this.listaArchivos = JSON.parse(localStorage.getItem('files_print')!) || [];
+
+    }
+
   }
 
 }

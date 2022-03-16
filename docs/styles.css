@@ -1,0 +1,71 @@
+/* You can add global styles to this file, and also import other style files */
+.btn{
+    border: none;
+    border-radius: 20px;
+}
+.form-control{
+    border-radius: 20px;
+}
+.status{
+    font-size: 12.2px;
+}
+.cursor{
+    cursor: pointer;
+    outline: none;
+}
+.error{
+    font-size: 12px;
+    margin-left: 10px;
+    color: red;
+}
+.img-conten{
+    background-size: cover;
+    width: 50%;
+ }
+.login-conten{
+     background-size: cover;
+     width: 55%;
+ }
+.img-login{
+     width: 80%;
+ }
+.conten-img-login{
+     display: flex;
+     justify-content: center;
+     align-items: center;
+ }
+.form-conten{
+    width: 50%;
+    margin: 0 auto;
+    height: 350px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.c-delete{
+  cursor: pointer;
+  /* font-size: 20px; */
+}
+@media (max-width:760px){
+    .form-conten{
+        width: 90%;
+    }
+    .img-conten{
+        width: 70%;
+    }
+    .img-login{
+        width: 70%;
+    }
+    .login-conten{
+        width: 100%;
+        height: 90%;
+    }
+    .decorator{
+        display: none;
+    }
+}
+
+
+/*# sourceMappingURL=styles.css.map*/
